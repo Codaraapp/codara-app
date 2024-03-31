@@ -1,0 +1,21 @@
+.memberpanel {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 32px;
+  border-radius: 4px;
+}
+
+.stepper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.stepper div {
+  width: 30px;
+  height: 10px;
+  display: block;
+  border-radius: 20px;
+}
