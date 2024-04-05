@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Container, Stack } from "@mui/material";
 import Image from "next/image";
-import style from "../member.module.css";
+import styles from "./member.module.css";
 
 export default function MemberLayout({
   children,
@@ -19,7 +19,7 @@ export default function MemberLayout({
             alt="Codara"
           ></Image>
         </Box>
-        <Box className={style.memberpanel}>{children}</Box>
+        <Box className={styles.memberpanel}>{children}</Box>
       </Stack>
     </Container>
   );

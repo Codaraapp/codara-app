@@ -48,7 +48,7 @@ export default function Page() {
           ></Box>
         </Box>
       </Box>
-      <Box display={currentStep === 1 ? "block" : "none"}>
+      <Box>
         <Stack spacing={3}>
           <Typography variant="h1" gutterBottom>
             Create a organization
@@ -76,16 +76,6 @@ export default function Page() {
           >
             Save
           </Button>
-        </Stack>
-      </Box>
-      <Box display={currentStep === 2 ? "block" : "none"}>
-        <Stack spacing={3}>
-          <Box>
-            <Typography variant="h1">Welcome, Supertem!</Typography>
-            <Typography variant="subtitle1">
-              Almost done.  Now choose a method for quick login.
-            </Typography>
-          </Box>
         </Stack>
       </Box>
     </>
