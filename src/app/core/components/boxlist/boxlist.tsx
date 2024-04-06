@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import style from "./boxlist.module.css";
@@ -12,10 +12,11 @@ type Item = {
 interface BoxListProps {
   items: Item[];
   onItemSelected: (value: any) => void;
+  selected?: string;
 }
 
-export function BoxList({ items, onItemSelected }: BoxListProps) {
-  const [selectedItem, setSelectedItem] = React.useState<any>(null);
+export function BoxList({ items, onItemSelected, selected }: BoxListProps) {
+  const [selectedItem, setSelectedItem] = React.useState<any>(selected);
 
   const handleItemClick = (value: any) => {
     setSelectedItem(value);

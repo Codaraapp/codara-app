@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -7,21 +8,44 @@ import { Stack, Typography } from "@mui/material";
 import { NavigateNext } from "@mui/icons-material";
 import { BoxList } from "@/app/core/components/boxlist/boxlist";
 import styles from "../member.module.css";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function Page() {
+  const { data: session, status, update } = useSession();
   const [currentStep, setCurrentStep] = useState(1);
+  const [organization_name, setOrgName] = useState("");
+  const [organization_type, setOrgType] = useState("");
   const items = [
-    { title: "Company", value: "1", img: "/images/company-icon.svg" },
+    { title: "Company", value: "company", img: "/images/company-icon.svg" },
     {
       title: "Open Source Community",
-      value: "2",
+      value: "opensourcecommunity",
       img: "/images/github-icon.svg",
     },
-    { title: "Community", value: "3", img: "/images/community-icon.svg" },
+    {
+      title: "Community",
+      value: "community",
+      img: "/images/community-icon.svg",
+    },
   ];
 
-  const handleItemSelected = (value: String) => {
+  const handleItemSelected = (value: string) => {
+    setOrgType(value);
     console.log("Seçilen Öğe:", value);
+  };
+
+  const handleSubmit = async () => {
+    const res = await fetch("/api/member/createorganization", {
+      method: "POST",
+      body: JSON.stringify({
+        organization_name: organization_name,
+        organization_type: organization_type,
+      }),
+    });
+    console.log(res.ok);
+    if (res.ok) {
+      window.location.href = "/member/signin";
+    }
   };
 
   return (
@@ -58,6 +82,10 @@ export default function Page() {
             label="Organization Name"
             variant="outlined"
             margin="normal"
+            value={organization_name}
+            onChange={(e) => {
+              setOrgName(e.target.value);
+            }}
           />
 
           <div>
@@ -71,7 +99,7 @@ export default function Page() {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => setCurrentStep(2)}
+            onClick={() => handleSubmit()}
             endIcon={<NavigateNext />}
           >
             Save

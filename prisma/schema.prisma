@@ -153,6 +153,7 @@ model users {
   is_complete          Boolean
   organization_name    String?             @db.VarChar(30)
   organization_type_id String?             @db.VarChar(20)
+  projects             projects[]
   organization_types   organization_types? @relation(fields: [organization_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_organization_type_id_da21f767_fk")
 
   @@unique([email, provider], map: "users_email_provider_783302dd_uniq")
@@ -160,4 +161,56 @@ model users {
   @@index([organization_type_id], map: "users_organization_type_id_da21f767_like")
   @@index([email], map: "users_email_0ea73cca_like")
   @@index([provider], map: "users_provider_52d6686a_like")
+}
+
+model events {
+  id         String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String?    @db.VarChar(200)
+  decription String?
+  start_date DateTime   @db.Timestamptz(6)
+  is_active  Boolean
+  projects   projects[]
+}
+
+model project_status {
+  project_status_code String     @id @db.VarChar(20)
+  project_status_name String     @db.VarChar(25)
+  projects            projects[]
+
+  @@index([project_status_code], map: "project_status_project_status_code_d52bfe30_like")
+}
+
+model project_types {
+  project_type_code String     @id @db.VarChar(20)
+  project_type_name String     @db.VarChar(25)
+  projects          projects[]
+
+  @@index([project_type_code], map: "project_types_project_type_code_1c2ec91d_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model projects {
+  id                 String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name               String         @db.VarChar(90)
+  desription         String?
+  prize_pool         Decimal        @db.Decimal(16, 4)
+  create_at          DateTime       @db.Timestamptz(6)
+  is_connect_repo    Boolean
+  is_connect_deposit Boolean
+  repo_name          String?        @db.VarChar(30)
+  project_status_id  String         @db.VarChar(20)
+  project_type_id    String         @db.VarChar(20)
+  user_id            String         @db.Uuid
+  event_id           String?        @db.Uuid
+  events             events?        @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projects_event_id_a036eddb_fk_events_id")
+  project_status     project_status @relation(fields: [project_status_id], references: [project_status_code], onDelete: NoAction, onUpdate: NoAction, map: "projects_project_status_id_16631424_fk")
+  project_types      project_types  @relation(fields: [project_type_id], references: [project_type_code], onDelete: NoAction, onUpdate: NoAction, map: "projects_project_type_id_a5b2ba49_fk_project_t")
+  users              users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projects_user_id_155ff78a_fk_users_id")
+
+  @@index([event_id], map: "projects_event_id_a036eddb")
+  @@index([project_status_id], map: "projects_project_status_id_16631424")
+  @@index([project_status_id], map: "projects_project_status_id_16631424_like")
+  @@index([project_type_id], map: "projects_project_type_id_a5b2ba49")
+  @@index([project_type_id], map: "projects_project_type_id_a5b2ba49_like")
+  @@index([user_id], map: "projects_user_id_155ff78a")
 }

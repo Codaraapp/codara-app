@@ -13,7 +13,7 @@ export default function MemberLayout({
       <Stack spacing={{ xs: 1, sm: 1, md: 2 }}>
         <Box sx={{ display: "flex", py: 4, justifyContent: "center" }}>
           <Image
-            src="/codaraicon.svg"
+            src="/images/codaraicon.svg"
             width={40}
             height={40}
             alt="Codara"

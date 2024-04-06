@@ -1,0 +1,54 @@
+.dasboardpanel {
+  background-color: #060b20;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  padding: 10px;
+  display: flex;
+}
+
+.dasboardpanel .leftpanel {
+  width: 210px;
+  padding: 10px 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.dasboardpanel .leftpanel .menu {
+  flex: 1;
+}
+
+.dasboardpanel .leftpanel .menu ul.leftmenu {
+  list-style-type: none;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.dasboardpanel .leftpanel .menu ul.leftmenu li {
+  margin-bottom: 20px;
+}
+
+.dasboardpanel .leftpanel .menu ul.leftmenu li a {
+  text-decoration: none;
+  color: #a6a6a6;
+  font-size: 14px;
+}
+
+.dasboardpanel .leftpanel .menu ul.leftmenu li a.active {
+  color: #ffffff;
+}
+
+.dasboardpanel .leftpanel .profile {
+  /* height: 200px; */
+}
+
+.dasboardpanel .contentpanel {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px 60px;
+}

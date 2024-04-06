@@ -1,0 +1,16 @@
+.formpanel {
+  display: flex;
+  flex-direction: row;
+}
+
+.formpanel .step {
+  width: 90px;
+}
+
+.formpanel .form {
+  flex: 1;
+}
+
+.MuiStepper-alternativeLabel {
+  display: none;
+}

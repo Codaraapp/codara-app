@@ -1,11 +1,10 @@
 import React from "react";
-import { getServerSession } from "next-auth";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./theme";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import Provider from "./core/providers/client-providers";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "./core/auth/auth";
 
 export const metadata: Metadata = {
   title: "Codara",
@@ -17,8 +16,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-
+  const session = await auth();
   return (
     <html lang="en">
       <head>
@@ -27,7 +25,7 @@ export default async function RootLayout({
       <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Provider session={session}>{children}</Provider>
+          <SessionProvider session={session}>{children}</SessionProvider>
         </ThemeProvider>
       </body>
     </html>
