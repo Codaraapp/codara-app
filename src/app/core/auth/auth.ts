@@ -7,7 +7,12 @@ import type { Session } from "next-auth";
 import { cookies } from "next/headers";
 
 export const config = {
-  providers: [GitHub, Google],
+  providers: [
+    GitHub({
+      authorization: { params: { scope: "read:user user:email repo project" } },
+    }),
+    Google,
+  ],
   callbacks: {
     // authorized({ request, auth }) {
     //   const { pathname } = request.nextUrl;
@@ -15,7 +20,7 @@ export const config = {
     //   return true;
     // },
     session({ session, token }: { session: Session; token: any }) {
-      // console.log(`========= -> ${JSON.stringify(session, null, 2)}`);
+      session.user.id = token.id;
       if (session && !session.user.is_complete) {
         session.user.is_complete = token.is_complete;
       }
@@ -38,7 +43,8 @@ export const config = {
       return token;
     },
     async signIn({ account, profile }) {
-      // console.log("signIn", profile);
+      console.log("signIn", account);
+      console.log("profile", profile);
       if (!profile?.email || !account) {
         throw new Error("No profile");
       }

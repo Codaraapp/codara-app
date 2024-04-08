@@ -47,13 +47,14 @@ export default function NewProjectForm() {
   const [openStep1, setOpenErrStep1] = useState(false);
   const [openStep2, setOpenErrStep2] = useState(false);
   const [openFetch, setOpenFetch] = useState(false);
+  const [openProjectSaved, setOpenProjectSaved] = useState(false);
 
   const formElements = [
     <ProjectType data={data} handleChange={handleChange} />,
     <ProjectInfo data={data} handleChange={handleChange} />,
   ];
 
-  const nextOrSave = () => {
+  const nextOrSave = async () => {
     if (activeTab === 0 && data.project_type === "") {
       setOpenErrStep1(true);
       return;
@@ -70,6 +71,21 @@ export default function NewProjectForm() {
 
     if (activeTab === 1) {
       setOpenFetch(true);
+      const res = await fetch("/api/project/create", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      console.log(res.ok);
+      if (res.ok) {
+        setOpenFetch(false);
+        setOpenProjectSaved(true);
+        const { data } = await res.json();
+        console.log(`Data: ${JSON.stringify(data)}`);
+        const newProjectLink = `/panel/project/detail/${data["project_id"]}`;
+        console.log(newProjectLink);
+        window.location.href = newProjectLink;
+      }
+
       return;
     }
 
@@ -87,12 +103,22 @@ export default function NewProjectForm() {
       </Backdrop>
 
       <Snackbar
+        open={openProjectSaved}
+        autoHideDuration={5000}
+        onClose={() => setOpenProjectSaved(false)}
+      >
+        <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+          Projects is saved ✅
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
         open={openStep2}
         autoHideDuration={4000}
-        onClose={() => setOpenStep2(false)}
+        onClose={() => setOpenErrStep2(false)}
       >
         <Alert
-          onClose={() => setOpenStep2(false)}
+          onClose={() => setOpenErrStep2(false)}
           severity="error"
           variant="filled"
           sx={{ width: "100%" }}
@@ -104,10 +130,10 @@ export default function NewProjectForm() {
       <Snackbar
         open={openStep1}
         autoHideDuration={4000}
-        onClose={() => setOpenStep1(false)}
+        onClose={() => setOpenErrStep1(false)}
       >
         <Alert
-          onClose={() => setOpenStep1(false)}
+          onClose={() => setOpenErrStep1(false)}
           severity="error"
           variant="filled"
           sx={{ width: "100%" }}

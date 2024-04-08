@@ -7,22 +7,22 @@ const ProjectType = (props: any) => {
   const items = [
     {
       title: "Outsource",
-      value: "outsource",
+      value: "OUTSOURCE",
       img: "/images/svg/outsource-icon.svg",
     },
     {
       title: "Hackathon",
-      value: "hackathon",
+      value: "HACKATHON",
       img: "/images/svg/hackathon-icon.svg",
     },
     {
       title: "Event",
-      value: "event",
+      value: "EVENT",
       img: "/images/svg/event-icon.svg",
     },
     {
       title: "Education",
-      value: "education",
+      value: "EDUCATION",
       img: "/images/svg/education-icon.svg",
     },
   ];
